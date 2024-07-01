@@ -1,0 +1,52 @@
+Coefficients:
+                               Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                  -0.0056324  0.0827573  -0.068 0.945738    
+age                           0.0005061  0.0011298   0.448 0.654181    
+`jobblue-collar`             -0.0867032  0.0335368  -2.585 0.009729 ** 
+jobentrepreneur              -0.2192693  0.0530627  -4.132 3.59e-05 ***
+jobhousemaid                 -0.1908597  0.0630657  -3.026 0.002475 ** 
+jobmanagement                -0.1540386  0.0398396  -3.866 0.000110 ***
+jobretired                   -0.1541063  0.0555081  -2.776 0.005498 ** 
+`jobself-employed`           -0.1838048  0.0532420  -3.452 0.000556 ***
+jobservices                  -0.0692218  0.0365587  -1.893 0.058299 .  
+jobstudent                    0.1253199  0.0667420   1.878 0.060426 .  
+jobtechnician                -0.0910312  0.0322591  -2.822 0.004774 ** 
+jobunemployed                -0.1107950  0.0610933  -1.814 0.069749 .  
+jobunknown                    0.0931913  0.1046562   0.890 0.373224    
+maritalmarried                0.1075963  0.0301040   3.574 0.000351 ***
+maritalsingle                 0.0730210  0.0344589   2.119 0.034084 *  
+maritalunknown                0.1342787  0.1926736   0.697 0.485851    
+educationbasic.6y            -0.0708032  0.0488225  -1.450 0.146998    
+educationbasic.9y            -0.1139742  0.0386633  -2.948 0.003200 ** 
+educationhigh.school         -0.0585039  0.0398796  -1.467 0.142373    
+educationilliterate          -0.5501732  0.4452451  -1.236 0.216584    
+educationprofessional.course  0.0071367  0.0448768   0.159 0.873646    
+educationuniversity.degree    0.0060994  0.0405437   0.150 0.880418    
+educationunknown             -0.1893898  0.0556157  -3.405 0.000661 ***
+defaultunknown                0.0047823  0.0237367   0.201 0.840328    
+defaultyes                   -9.4659299 51.2379062  -0.185 0.853429    
+monthaug                     -0.0422228  0.0439883  -0.960 0.337124    
+monthdec                      0.0047697  0.1466555   0.033 0.974055    
+monthjul                      0.1433639  0.0425524   3.369 0.000754 ***
+monthjun                      0.0228430  0.0444855   0.513 0.607607    
+monthmar                     -0.0781016  0.0895542  -0.872 0.383145    
+monthmay                      0.0612884  0.0398102   1.540 0.123679    
+monthnov                      0.0663916  0.0465306   1.427 0.153627    
+monthoct                     -0.0632040  0.0775747  -0.815 0.415215    
+monthsep                     -0.0215070  0.0870347  -0.247 0.804824    
+day_of_weekmon               -0.0069163  0.0286766  -0.241 0.809413    
+day_of_weekthu               -0.0424532  0.0287463  -1.477 0.139724    
+day_of_weektue               -0.1141635  0.0294139  -3.881 0.000104 ***
+day_of_weekwed               -0.0792977  0.0292475  -2.711 0.006703 ** 
+duration_of_contact           0.0006830  0.0020782   0.329 0.742436    
+num_of_contacts               0.0037891  0.0033214   1.141 0.253934    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 67812  on 48915  degrees of freedom
+Residual deviance: 67665  on 48876  degrees of freedom
+AIC: 67745
+
+Number of Fisher Scoring iterations: 8
