@@ -1,0 +1,23 @@
+Initial Statement
+
+	The realm of business is multi-faceted, involving areas such as finance, management, operations, accounting, and marketing.  These areas are constantly evolving to solve the problems of the modern business landscape.  Quantitative marketing has proven itself to be one of the primary areas that modern businesses must capture if they wish to compete in this current market. The purpose of this report is to introduce and review the analysis done on the Bank Marketing Data Set.   A logistic regression was performed on the data to predict the likelihood that a customer will receive a loan or not based on various factors, and to determine which factors matter the most in receiving a loan or not.  Analyses such as these are useful in understanding habits and predicting future patterns. 
+Data
+
+	The dataset used for this analysis is titled the Bank Marketing Data Set and comes from Kaggle.com.   This data set represents a marketing campaign conducted by a Portuguese banking institution.  The original dataset contains 21 variables and 41188 observations. The final dataset contains 10 variables with the same number of observations.  The variables used in the final analysis include loan, age, job, marital, education, default, month, day_of_week, duration, and campaign.  The duration variable was renamed to duration_of_contact, and the campaign variable was renamed to num_of_contacts. The response variable is loan, while the rest are predictor variables.  The duration_of_contact variable was transformed from seconds to minutes for ease of interpretation, and the loan variable was transformed from its “no”, “yes”, format to a “0”, “1” categorical format needed for the analysis.  
+ 
+Statistical Techniques and Analysis
+    
+	The VIF, Variance Inflation Factor, method was used to check for multicollinearity.  A correlation matrix prior to the variable selection process was not possible given the nature of this data set being a combination of numerical and categorical data types (a correlation matrix in R requires all numeric data types). VIF values between 1 and 5 represent little to no multicollinearity and are generally considered acceptable.  Values between 5 and 10 represent moderate to high levels of multicollinearity.  From the table produced from this analysis we can see that multicollinearity is not an issue. 
+ 
+The variables that can be said to be statistically significant in predicting weather or not someone will receive a loan or not (determined by their associated p-value) include: job(blue-collar) .019, job(entrepreneur) 0.034, job(housemaid) 0.020, job(self-employed) 50e-05, job(technician) 84e-06, job(unknown) 0.000884, marital(married) 0.0312, education(basic 6y) 0.0066, education basic(9y) 0.0288, education(unknown) 4.13e-05, default(unknown) 0.033, month(December) 0.00128, month(July) 4.26e-06, month(May) 0.004225, and day_of_week(Tuesday) 6.96e-06.  It should be noted that duration_of contact was slightly above the 0.05 threshold, with a p-value of 0.0687, and num_of_contacts  0.0549.
+The random oversampling technique was used to address the class imbalance within the response variable “loan”.  . While the original model, without oversampling, performed at an impressive 84%, it did so by only predicting “0” and was correct 84% of the time. After readjusting the model, an accuracy level of 52% was reached.  From the confusion matrix we can see however that this number was reached using predictions from both classes. 
+ 
+Results
+From the analysis, it was determined that the factors, and the odds ratios of those that matter the most as to weather a customer will receive a loan or not are those who have a job and are self employed (0.8022), those who have a job and are a technician (0.8559), the month of contact being in July (1.2163), the month of contact being in October (0.9183), and the contact day of the week being Tuesday (0.8761).  Analyses such as this are usefull in helping businesses find patterns in customer behavior, that they can then leverage for a competitive advantage in this modern business landscape. 
+
+
+	
+
+
+
+
