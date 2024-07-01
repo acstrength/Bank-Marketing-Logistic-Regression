@@ -1,0 +1,106 @@
+## load libraries ##
+library
+library(dplyr)
+library(car)
+library(caret)
+install.packages('ROSE')
+library(ROSE)
+library(pROC)
+
+
+## read in dataset ##
+df1<-read.csv("C:/Users/akeem/Desktop/archive (6)/bank_marketing_dataset.csv")
+
+## subset for variables of interest ##
+df1<-select(df1,loan,age,job,marital,education,default,month,day_of_week,
+            duration,campaign,)
+
+## rename variables
+df1<-rename(df1,duration_of_contact = duration)
+df1<-rename(df1,num_of_contacts = campaign)
+
+## convert to minutes ##
+df1<-mutate(df1,duration_of_contact = duration_of_contact/60)
+
+
+## format response variable ##
+df1<-df1%>%
+  mutate(loan = ifelse(grepl('yes',loan), 1, loan))
+
+df1<-df1%>%
+  mutate(loan = ifelse(grepl('no',loan), 0, loan))
+
+## factor categorical variables ##
+df1$loan<-as.factor(df1$loan)
+df1$job<-as.factor(df1$job)
+df1$marital<-as.factor(df1$marital)
+df1$education<-as.factor(df1$education)
+df1$default<-as.factor(df1$default)
+df1$month<-as.factor(df1$month)
+df1$day_of_week<-as.factor(df1$day_of_week)
+
+## create preliminary model ##
+model<-glm(loan ~ age + job + marital + education + default + month +
+             day_of_week + duration_of_contact + num_of_contacts,
+           data = df1,
+           family = binomial)
+
+
+## check for multicollinearity ##
+vif_values<-vif(model)
+
+## check frequency of response variable levels ##
+freq<-table(df1$loan)
+print(freq)
+
+## create model ##
+set.seed(123)
+train_index<-createDataPartition(df1$loan, p = 0.7, list = FALSE)
+train_data<-df1[train_index, ]
+test_data<-df1[-train_index, ]
+train_control<-trainControl(method = 'cv',number = 5)
+
+## oversample training data ##
+
+set.seed(123)
+train_data_oversampled <- ovun.sample(loan ~ ., data = train_data, method = "over",
+                                      N = 2 * table(train_data$loan)[1])$data
+## check distribution ##
+table(train_data_oversampled$loan)
+
+
+
+model1<-train(loan ~ age + job + marital + education + default + month+
+                day_of_week + duration_of_contact + num_of_contacts,
+              data = train_data_oversampled,
+              method = 'glm',
+              trControl = train_control,
+              family = "binomial")
+
+## obtain model summary ##
+summary(model1)
+print(model1)
+
+
+## obtain predictions ##
+predictions<-predict(model1, newdata = test_data, type = "prob")
+predicted_classes<-ifelse(predictions[, '1'] >=0.5,1,0)
+predictions
+
+#### evaluate model ####
+## create confusion Matrix ##
+cm<-confusionMatrix(factor(predicted_classes, levels = c(0, 1)), 
+                     factor(test_data$loan, levels = c(0, 1)))
+print(cm)
+
+## extract coeficients ##
+coef<-coef(model1)
+print(coefficients)
+class(model1)
+
+## calcualte odds ratios ##
+co<-model1$finalModel
+coef<-coef(model1$finalModel)
+odds_ratio<-exp(coef)
+print(odds_ratio)
+odds_ratio<-data.frame(odds_ratio)
