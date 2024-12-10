@@ -3,13 +3,12 @@ library
 library(dplyr)
 library(car)
 library(caret)
-install.packages('ROSE')
 library(ROSE)
 library(pROC)
 
 
 ## read in dataset ##
-df1<-read.csv("C:/Users/akeem/Desktop/archive (6)/bank_marketing_dataset.csv")
+df1<-read.csv("C:/users/akeem/Desktop/Data/bank_marketing_dataset.csv")
 
 ## subset for variables of interest ##
 df1<-select(df1,loan,age,job,marital,education,default,month,day_of_week,
@@ -38,6 +37,7 @@ df1$education<-as.factor(df1$education)
 df1$default<-as.factor(df1$default)
 df1$month<-as.factor(df1$month)
 df1$day_of_week<-as.factor(df1$day_of_week)
+df1$num_of_contacts<-as.factor(df1$num_of_contacts)
 
 ## create preliminary model ##
 model<-glm(loan ~ age + job + marital + education + default + month +
@@ -48,6 +48,7 @@ model<-glm(loan ~ age + job + marital + education + default + month +
 
 ## check for multicollinearity ##
 vif_values<-vif(model)
+print(vif_values)
 
 ## check frequency of response variable levels ##
 freq<-table(df1$loan)
@@ -69,7 +70,6 @@ train_data_oversampled <- ovun.sample(loan ~ ., data = train_data, method = "ove
 table(train_data_oversampled$loan)
 
 
-
 model1<-train(loan ~ age + job + marital + education + default + month+
                 day_of_week + duration_of_contact + num_of_contacts,
               data = train_data_oversampled,
@@ -87,10 +87,12 @@ predictions<-predict(model1, newdata = test_data, type = "prob")
 predicted_classes<-ifelse(predictions[, '1'] >=0.5,1,0)
 predictions
 
-#### evaluate model ####
+                #### evaluate model ####
+
+
 ## create confusion Matrix ##
 cm<-confusionMatrix(factor(predicted_classes, levels = c(0, 1)), 
-                     factor(test_data$loan, levels = c(0, 1)))
+                    factor(test_data$loan, levels = c(0, 1)))
 print(cm)
 
 ## extract coeficients ##
@@ -104,3 +106,13 @@ coef<-coef(model1$finalModel)
 odds_ratio<-exp(coef)
 print(odds_ratio)
 odds_ratio<-data.frame(odds_ratio)
+
+## create ROC object ##
+roc_curve<-roc(test_data$loan, predictions[, '1'])
+
+## plot ROC curve ##
+plot(roc_curve, main = 'ROC Curve', col = 'blue',lwd = 2)
+
+## calcualte AUC score ##
+auc_value<-auc(roc_curve)
+print(paste('AUC: ', auc_value))
